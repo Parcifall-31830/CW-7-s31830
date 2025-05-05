@@ -9,7 +9,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2e43808-79e4-4ae9-a529-b2d6c965f97f" name="Changes" comment="" />
+    <list default="true" id="e2e43808-79e4-4ae9-a529-b2d6c965f97f" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/WebApplication2/Controllers/clientsController.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApplication2/Exceptions/BadRequestException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApplication2/Models/Client.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApplication2/Models/DTOs/ClientGetDTO.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/WebApplication2/Models/DTOs/ClientTripWithInfoDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.WebApplication2/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.WebApplication2/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApplication2/Controllers/TripController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApplication2/Controllers/tripsController.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApplication2/Models/DTOs/TripGetDTO.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApplication2/Models/DTOs/TripGetDTO.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/WebApplication2/Services/DbService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/WebApplication2/Services/DbService.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,9 +28,13 @@
   <component name="DpaMonitoringSettings">
     <option name="firstShow" value="false" />
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/45ada8c418664ff394ffd30455aab498c90910/2a/5574db9f/ExceptionDispatchInfo.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/WebApplication2/Controllers/TripController.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/67a0ea45de2a455492a6fb0f5c5a698240928/42/4b61258d/IActionResult.cs" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/72d23034c73c39a3158f19ddb774bc79ec8506bb8a6386094036acef98d7bf/FromBodyAttribute.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/WebApplication2/Controllers/tripsController.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApplication2/Exceptions/NotFoundException.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApplication2/Models/DTOs/TripGetDTO.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/WebApplication2/Program.cs" root0="FORCE_HIGHLIGHTING" />
@@ -38,18 +52,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;.NET Launch Settings Profile.WebApplication2: http.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    ".NET Launch Settings Profile.WebApplication2: http.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="WebApplication2: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/WebApplication2/WebApplication2.csproj" />
@@ -76,6 +92,7 @@
       <option name="presentableId" value="Default" />
       <updated>1746217701567</updated>
       <workItem from="1746217702649" duration="2044000" />
+      <workItem from="1746453524558" duration="9766000" />
     </task>
     <servers />
   </component>
