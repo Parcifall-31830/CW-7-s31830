@@ -12,7 +12,9 @@ public interface  IDbService
 {
     public Task<IEnumerable<TripGetDTO>> GetTripsAsync();
     public Task<IEnumerable<ClientTripWithInfoDTO>>GetAllTripsByClientIdAsync(int id);
-    public Task<int> AddClientDB(ClientGetDTO cgd);
+    public Task<Client> AddClientDB(ClientGetDTO cgd);
+    public Task reservationToTripDB(int clientId,int tripId);
+    public Task deleteReservationDB(int clientId, int tripId);
 
 }
 
@@ -58,8 +60,7 @@ public class DbService(IConfiguration config): IDbService
         var connectionString = config.GetConnectionString("Default");
 
         await using var connection = new SqlConnection(connectionString);
-
-        // 1. Sprawdzenie czy klient istnieje
+        
         var checkClientSql = "SELECT COUNT(1) FROM Client WHERE IdClient = @ClientId";
         await using (var checkCmd = new SqlCommand(checkClientSql, connection))
         {
@@ -72,8 +73,7 @@ public class DbService(IConfiguration config): IDbService
             }
             await connection.CloseAsync();
         }
-
-        // 2. Pobranie wycieczek + info o rejestracji/płatności
+        
         var sql = @"
         SELECT t.IdTrip, t.Name, t.Description, t.DateFrom, t.DateTo, t.MaxPeople,
                ct.RegisteredAt, ct.PaymentDate
@@ -104,7 +104,7 @@ public class DbService(IConfiguration config): IDbService
         return result;
     }
 
-    public async Task<int> AddClientDB(ClientGetDTO client)
+    public async Task<Client> AddClientDB(ClientGetDTO client)
     {
         if (
             string.IsNullOrWhiteSpace(client.FirstName) ||
@@ -144,8 +144,101 @@ public class DbService(IConfiguration config): IDbService
 
         await command.ExecuteNonQueryAsync();
 
-        return newId;
+        return new Client()
+        {
+            Id = newId,
+            FirstName = client.FirstName,
+            LastName = client.LastName,
+            Email = client.Email,
+            Telephone = client.Telephone,
+            Pesel = client.Pesel,
+        };
     }
+
+    public async Task reservationToTripDB(int clientId,int tripId)
+    {
+        var connectionString = config.GetConnectionString("Default");
+        await using var connection = new SqlConnection(connectionString);
+        await connection.OpenAsync();
+        
+        var checkClientSql = "SELECT COUNT(1) FROM Client WHERE IdClient = @clientId";
+        var checkTripSql = "SELECT COUNT(1) FROM Trip WHERE IdTrip = @tripId";
+        var checkClientTripSql = "SELECT COUNT(1) FROM Client_Trip WHERE IdTrip = @tripId AND IdClient = @ClientId";
+
+        await using (var checkCmdClient = new SqlCommand(checkClientSql, connection))
+        {
+            checkCmdClient.Parameters.AddWithValue("@clientId",clientId );
+            var clientExist = (int)await checkCmdClient.ExecuteScalarAsync()>0;
+            if (!clientExist)
+            {
+                throw new NotFoundException($"Client with ID {clientId} does not exist.");
+            }
+        }
+
+        await using (var checkCmdTrip = new SqlCommand(checkTripSql, connection))
+        {
+            checkCmdTrip.Parameters.AddWithValue("@tripId", tripId);
+            var tripExist = (int)await checkCmdTrip.ExecuteScalarAsync()>0;
+            if (!tripExist)
+            {
+                throw new NotFoundException($"Trip with ID {tripId} does not exist.");
+            }
+        }
+
+        await using (var checkCmdTrip = new SqlCommand(checkClientTripSql, connection))
+        {
+            checkCmdTrip.Parameters.AddWithValue("@clientId", clientId);
+            checkCmdTrip.Parameters.AddWithValue("@tripId", tripId);
+            var tripExist = (int)await checkCmdTrip.ExecuteScalarAsync()>0;
+            if (tripExist)
+            {
+                throw new BadRequestException($"Connection between Client with ID {clientId} and Trip with ID {tripId} already exists.");
+            }
+        }
+        
+        var sql = @"Insert into Client_Trip(IdClient,IdTrip,RegisteredAt) 
+                    values(@clientId,@tripId,@date)";
+        
+        await using var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@clientId", clientId);
+        command.Parameters.AddWithValue("@tripId", tripId);
+        command.Parameters.AddWithValue("@date", int.Parse("" + DateTime.Now.Year + DateTime.Now.Month + DateTime.Now.Day));
+
+        await command.ExecuteNonQueryAsync();
+    
+    
+       
+        
+    }
+
+    public async Task deleteReservationDB(int clientId, int tripId)
+    {
+        var connetionString = config.GetConnectionString("Default");
+        await using var connection = new SqlConnection(connetionString);
+        await connection.OpenAsync();
+        
+        var checkSql = "SELECT COUNT(1) FROM Client_Trip WHERE IdClient = @clientId and IdTrip = @tripId";
+        await using (var checkExist = new SqlCommand(checkSql, connection))
+        {
+            checkExist.Parameters.AddWithValue("@clientId", clientId);
+            checkExist.Parameters.AddWithValue("@tripId", tripId);
+            var exist =(int)await checkExist.ExecuteScalarAsync()>0;
+            if (!exist)
+            {
+                throw new NotFoundException($"Connection between Client with ID {clientId} and Trip with ID {tripId} does not exist.");
+            }
+        }
+        
+        var sql = @"Delete from Client_Trip where IdClient = @clientId and IdTrip = @tripId";
+        await using var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@clientId", clientId);
+        command.Parameters.AddWithValue("@tripId", tripId);
+        await command.ExecuteNonQueryAsync();
+
+
+    }
+
+
 
 
 
